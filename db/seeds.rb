@@ -1,5 +1,6 @@
 User.destroy_all
 Place.destroy_all
+#Comment.destroy_all
 
 user = User.new
 user.email = 'test@test.com'
@@ -28,4 +29,13 @@ Place.create!([{
   user_id: user.id,
 }])
 
-p "Created #{Place.count} Place"
+p "Created #{Place.count} places"
+
+# Comment.create!([{
+#     message: "jkfdhkfjhsd",
+#     rating: 4,
+#     user_id: user.id,
+#     place_id: Place[0].id
+# }])
+
+# p "Created #{Comment.count} comments"
