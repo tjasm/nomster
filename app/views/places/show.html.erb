@@ -6,7 +6,7 @@
 
   </head>
   <body>
-  <div id="map"></div>
+
 
   <% if @place.latitude.present? && @place.longitude.present? %>
 
@@ -35,7 +35,17 @@
 
 <div id="map"></div>
 <% end %>
+<h1>Comments</h1>
 
+<% @place.comments.each do |comment| %>
+  <div>
+    <blockquote>
+      <b><%= comment.rating %></b> -
+        <%= comment.message %>
+      <small><%= comment.user.email %></small>
+    </blockquote>
+  </div>
+<% end %>
   <div class="float-right">
     <% if current_user && current_user == @place.user %>
         <%= link_to 'Edit', edit_place_path(@place), class: 'btn btn-primary' %>
