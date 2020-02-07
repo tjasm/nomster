@@ -1,5 +1,13 @@
 <div class="booyah-box col-10 offset-1">
     <h1><%= @place.name %></h1>
+        
+    <% if current_user && current_user == @place.user %>
+    <div class="float-right">
+      <%= link_to 'Edit', edit_place_path(@place), class: 'btn btn-primary' %>
+      <%= link_to 'Destroy', place_path(@place), method: :delete, data: {confirm: 'Are you sure you want to delete this?'}, class: 'btn btn-danger' %>
+    </div>
+    <% end %>
+      
     <i><%= @place.address %></i>
     <br/><br/>
     <p><%= @place.description %></p>
@@ -10,7 +18,7 @@
           var myLatLng = {lat: <%= @place.latitude %>, lng: <%= @place.longitude %>};
 
           var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 12,
+          zoom: 16,
           center: myLatLng
         });
 
@@ -26,16 +34,7 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCplvgVzumwZ8fs640XIwt9dWYE0jnlP6E&callback=initMap">
     </script>
 
-    <div id="map"></div><br />
-    <div class="float-right">
-        <% if current_user && current_user == @place.user %>
-          <%= link_to 'Edit', edit_place_path(@place), class: 'btn btn-primary' %>
-          <%= link_to 'Destroy', place_path(@place), method: :delete, data: {confirm: 'Are you sure you want to delete this?'}, class: 'btn btn-danger' %>
-        <% end %>
-      </div>
-    </head>
-    <body>
-    <br />
+    <div id="map"></div>
   <% end %>   
 
 
@@ -89,6 +88,25 @@
 </div>
 
 <%= simple_form_for @photo, url: place_photos_path(@place) do |f| %>
+  <%= f.input :picture %>
   <%= f.input :caption %>
   <%= f.submit "Add a Photo", class: 'btn btn-primary' %>
 <% end %>
+
+<div class="clear"></div> 
+
+<h1 class="float-left">Photos</h1>
+  <div class="row">
+    <% @place.photos.each do |photo| %>
+      <div class="col-12 col-sm-6">
+        <blockquote>
+          <% if photo.picture.present? %>
+            <b><%= image_tag photo.picture.url, class: 'img-fluid' %></b> -
+          <% end %>
+          <%= photo.caption %>
+          <small><%= photo.user.email %></small>
+        </blockquote>
+      </div>
+    <% end %>
+  </div>
+  </div>
